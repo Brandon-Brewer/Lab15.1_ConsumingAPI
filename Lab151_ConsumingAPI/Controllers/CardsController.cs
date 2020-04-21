@@ -19,9 +19,11 @@ namespace Lab151_ConsumingAPI.Controllers
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://deckofcardsapi.com");
+            
+            var response = await client.GetAsync("api/deck/new/shuffle/?deck_count=1");
+            var deck = await response.Content.ReadAsAsync<Deck>();
 
-            var response = await client.GetAsync("api/deck/pwaiymjs4tqy/draw/?count=5");
-  
+            response = await client.GetAsync($"api/deck/{deck.Deck_id}/draw/?count=5");
             var cards = await response.Content.ReadAsAsync<Hand>();
 
             return View(cards);
